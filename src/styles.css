@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+    color: #02020A;
+    background-color: #E1E2EF;
+}
+
+/* Color Pallete:
+
+- #BFACAA
+- #02020A
+- #05204A
+- #BFA7DC
+- #E1E2EF
+
+/*
+
+/* Background to text contrast ratio for this page:
+
+Background 1: #E1E2EF, Foregound 1: #02020A = ratio: 16:1
+
+*/
