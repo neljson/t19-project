@@ -1,0 +1,19 @@
+<h2 *ngIf="selectedCell">Selected Cell: {{ selectedCell }}</h2>
+<table class="excel-table">
+    <tr *ngFor="let rowIndex of rows; let r = index">
+        <td *ngFor="let colName of cols; let c = index" [class.header]="r === 0 || c === 0"
+            (click)="r !== 0 && c !== 0 ? selectCell(r, c) : null">
+            <!-- Top-left corner -->
+            <ng-container *ngIf="r === 0 && c === 0"> </ng-container>
+
+            <!-- Top header row -->
+            <ng-container *ngIf="r === 0 && c !== 0">{{ colName }}</ng-container>
+
+            <!-- Left header column -->
+            <ng-container *ngIf="r !== 0 && c === 0">{{ r }}</ng-container>
+
+            <!-- Regular cell -->
+            <ng-container *ngIf="r !== 0 && c !== 0"></ng-container>
+        </td>
+    </tr>
+</table>
