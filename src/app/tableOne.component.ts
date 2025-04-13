@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgForOf, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -10,9 +10,11 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './tableOne.component.html',
     styleUrls: ['./tableOne.component.css']
 })
-export class TableOneComponent {
+export class TableOneComponent implements OnChanges {
+    @Input() inputData!: number[]; // Will receive [rows, columns, colors]
+
     // Simulate user input — number of rows to create
-    numberOfRows: number = 4;
+    numberOfRows: number = 0;
 
     // A list that we'll use to build our rows
     rowsToDisplay: number[] = [];
@@ -33,18 +35,14 @@ export class TableOneComponent {
         this.createRowList(this.numberOfRows);
     }
 
-    /**
-  * Creates an array of numbers starting from 0 up to (but not including) the number passed in
-  * If numberOfRows = 4 → creates [0, 1, 2, 3]
-  */
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['inputData'] && this.inputData?.length === 3) {
+            this.numberOfRows = this.inputData[2];
+            this.createRowList(this.numberOfRows);
+        }
+    }
+
     createRowList(count: number): void {
-        // const rowList: number[] = [];
-
-        // for (let i = 0; i < count; i++) {
-        //     rowList.push(i); // Add each number to the list
-        // }
-
-        // this.rowsToDisplay = rowList;
 
         this.rows = [];
 

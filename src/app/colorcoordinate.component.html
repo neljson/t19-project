@@ -1,10 +1,16 @@
-<form id="colorForm">
+<form id="colorForm" (ngSubmit)="submitForm()" #formRef="ngForm">
     <label for="rows">Rows:</label>
-    <input type="number" id="rows" name="rows" min="1" max="1000"><br>
+    <input type="number" id="rows" name="rows" [(ngModel)]="formData.rows" min="1" max="1000"><br>
+
     <label for="columns">Columns:</label>
-    <input type="number" id="columns" name="columns" min="1" max="702"><br>
+    <input type="number" id="columns" name="columns" [(ngModel)]="formData.columns" min="1" max="702"><br>
+
     <label for="colors">Colors:</label>
-    <input type="number" id="colors" name="colors" min="1" max="10"><br>
+    <input type="number" id="colors" name="colors" [(ngModel)]="formData.colors" min="1" max="10"><br>
 
     <button type="submit">Submit</button>
 </form>
+
+<!-- Conditionally render table after form is submitted -->
+<app-table1 *ngIf="tableData !== null" [inputData]="tableData">
+</app-table1>
