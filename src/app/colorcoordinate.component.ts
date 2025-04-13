@@ -20,19 +20,48 @@ export class ColorCoordinateComponent {
         if (isPlatformBrowser(this.platformId)) {
             let rowInput: HTMLInputElement = document.getElementById('rows') as HTMLInputElement;
             let colInput: HTMLInputElement = document.getElementById('columns') as HTMLInputElement;
+            let colorInput: HTMLInputElement = document.getElementById('color') as HTMLInputElement;
+
+            const error = document.getElementById('error') as HTMLDivElement;
+
+            const handleInputError = (fn: () => void) => {
+                try {
+                    fn();
+                    error.textContent = '';
+                } catch (err) {
+                    if (err instanceof InputError) {
+                        error.textContent = err.message;
+                    } else {
+                        console.error(err);
+                    }
+                }
+            };
 
             rowInput.addEventListener('input', () => {
-                const rowNum: number = parseInt(rowInput.value);
-                if (rowNum < 1 || rowNum > 1000) {
-                    throw new InputError('Row value must be between 1 and 1000');
-                }
+                handleInputError(() => {
+                    const rowNum: number = parseInt(rowInput.value);
+                    if (!Number.isInteger(rowNum) || rowNum < 1 || rowNum > 1000) {
+                        throw new InputError('Row value must be between 1 and 1000');
+                    }
+                });
             });
             
-            rowInput.addEventListener('input', () => {
-                const colNum: number = parseInt(colInput.value);
-                if (colNum < 1 || colNum > 1000) {
-                    throw new InputError('Column value must be between 1 and 702');
-                }
+            colInput.addEventListener('input', () => {
+                handleInputError(() => {
+                    const colNum: number = parseInt(colInput.value);
+                    if (!Number.isInteger(colNum) || colNum < 1 || colNum > 702) {
+                        throw new InputError('Column value must be between 1 and 702');
+                    }
+                });
+            });
+
+            colorInput.addEventListener('input', () => {
+                handleInputError(() => { 
+                    const colorNum: number = parseInt(colorInput.value);
+                    if (!Number.isInteger(colorNum) || colorNum < 1 || colorNum > 10) {
+                        throw new InputError('Color value must be between 1 and 10');
+                    }
+                });
             });
         }
     }
