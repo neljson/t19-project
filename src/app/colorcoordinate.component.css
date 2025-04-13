@@ -1,0 +1,62 @@
+form#colorForm {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(5, 32, 74, 0.15);
+    border: 2px solid #BFACAA;
+}
+
+label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #05204A;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.3rem;
+    border: 1px solid #BFACAA;
+    border-radius: 6px;
+    background-color: #F9F9FB;
+    color: #02020A;
+}
+
+button {
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #05204A;
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #092e69;
+}
+
+/* Color Pallete:
+
+- #BFACAA
+- #02020A
+- #05204A
+- #BFA7DC
+- #E1E2EF
+
+/*
+
+/* Background to text contrast ratio for this component:
+
+Background 1: #E1E2EF, Foreground 1: #02020A = ratio: 16:1
+Background 2: #ffffff, Foreground 2: #02020A = ratio: 20:1
+Background 3: #05204A, Foreground 3: #ffffff = ratio: 16:1
+
+*/

@@ -1,3 +1,7 @@
+nav {
+    padding: 20px
+}
+
 nav ul {
     list-style: none;
     display: flex;
@@ -7,13 +11,16 @@ nav ul {
 
 nav ul li a {
     text-decoration: none;
-    color: black;
+    color: #16001E;
     font-weight: bold;
     transition: color 0.3s;
+    border: 2px solid #05204A;
+    background-color: #BFA7DC;
+    padding: 12px 24px;
 }
 
 nav ul li a:hover {
-    color: blue;
+    background-color: #AA8BD0;
 }
 
 .navbar {
@@ -42,3 +49,19 @@ nav ul li a:hover {
     padding: 0;
     box-sizing: border-box;
 }
+
+/* Color Pallete:
+
+- #BFACAA
+- #02020A
+- #05204A
+- #BFA7DC
+- #E1E2EF
+
+/*
+
+/* Background to text contrast ratio for this component:
+
+Background 1: #BFA7DC;, Foreground 1: #05204A; = ratio: 8:1
+
+*/

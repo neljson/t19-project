@@ -65,6 +65,10 @@ export class ColorCoordinateComponent {
             });
         }
     }
+
+    onSubmit(event: Event): void {
+        event.preventDefault();
+    }
 }
 
 class InputError extends Error {
@@ -72,5 +76,4 @@ class InputError extends Error {
       super(message);
       this.name = 'InputError';
     }
-  }
-
+}
