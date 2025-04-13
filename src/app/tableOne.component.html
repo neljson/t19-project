@@ -1,0 +1,19 @@
+<table class="styled-table">
+    <tr *ngFor="let row of rows">
+        <td class="col-left">
+            <!-- Radio button -->
+            <input type="radio" name="selectedRow" [value]="row.index" [checked]="selectedRow === row.index"
+                (change)="setSelectedRow(row.index)" />
+
+            <!-- Dropdown selector -->
+            <select [(ngModel)]="row.selectedColor" [disabled]="selectedRow !== row.index"
+                (change)="onColorChange(row.index, row.selectedColor)">
+                <option *ngFor="let color of getAvailableColors(row.index)" [value]="color">
+                    {{ color | titlecase }}
+                </option>
+            </select>
+        </td>
+
+        <td class="col-right"></td>
+    </tr>
+</table>

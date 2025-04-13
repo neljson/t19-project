@@ -1,11 +1,14 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, NgIf } from '@angular/common';
 import { Component, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { TableOneComponent } from './tableOne.component';
+import { TableTwoComponent } from './tableTwo.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'color-coordinate',
     standalone: true,
-    imports: [RouterOutlet],
+    imports: [RouterOutlet, FormsModule, TableOneComponent, TableTwoComponent, NgIf],
     templateUrl: './colorcoordinate.component.html',
     styleUrls: ['./colorcoordinate.component.css']
 })
@@ -13,8 +16,9 @@ import { RouterOutlet } from '@angular/router';
 //https://angular.dev/api/core/AfterViewInit#ngAfterViewInit
 export class ColorCoordinateComponent {
     title = 'Color Coordinate page';
-    
-    constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+
+    constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
     ngAfterViewInit(): void {
         if (isPlatformBrowser(this.platformId)) {
@@ -45,7 +49,7 @@ export class ColorCoordinateComponent {
                     }
                 });
             });
-            
+
             colInput.addEventListener('input', () => {
                 handleInputError(() => {
                     const colNum: number = parseInt(colInput.value);
@@ -56,7 +60,7 @@ export class ColorCoordinateComponent {
             });
 
             colorInput.addEventListener('input', () => {
-                handleInputError(() => { 
+                handleInputError(() => {
                     const colorNum: number = parseInt(colorInput.value);
                     if (!Number.isInteger(colorNum) || colorNum < 1 || colorNum > 10) {
                         throw new InputError('Color value must be between 1 and 10');
@@ -66,14 +70,26 @@ export class ColorCoordinateComponent {
         }
     }
 
-    onSubmit(event: Event): void {
-        event.preventDefault();
+    tableData: number[] | null = null;
+
+    formData = {
+        rows: 1,
+        columns: 1,
+        colors: 1
+    };
+
+    submitForm(): void {
+        this.tableData = [
+            this.formData.rows,
+            this.formData.columns,
+            this.formData.colors
+        ];
     }
 }
 
 class InputError extends Error {
     constructor(message: string) {
-      super(message);
-      this.name = 'InputError';
+        super(message);
+        this.name = 'InputError';
     }
 }

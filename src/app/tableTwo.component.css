@@ -1,0 +1,18 @@
+.excel-table {
+    width: auto;
+    border-collapse: collapse;
+    margin: 1rem auto;
+    font-family: sans-serif;
+}
+
+.excel-table td {
+    border: 1px solid #ccc;
+    width: 60px;
+    height: 40px;
+    text-align: center;
+}
+
+.excel-table td.header {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
