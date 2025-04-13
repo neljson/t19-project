@@ -12,6 +12,10 @@
     align-items: center;
     text-align: center;
     max-width: 200px;
+    padding: 10px;
+    border: 4px solid #05204A;
+    border-radius: 12px;
+    background-color: #BFA7DC;
 }
 
 .team-member img {
@@ -25,4 +29,31 @@
 .bio h3 {
     margin: 0.5rem 0 0.2rem;
     font-size: 1.1rem;
+    text-decoration: underline;
+    color: #02020A;
 }
+
+.bio p {
+    background-color: white;
+    padding: 8px;
+    border-radius: 8px;
+    height: 300px;
+    border: 2px solid #BFACAA;
+}
+
+/* Color Pallete:
+
+- #BFACAA
+- #02020A
+- #05204A
+- #BFA7DC
+- #E1E2EF
+
+/*
+
+/* Background to text contrast ratio for this component:
+
+Background 1: #BFA7DC, Foreground 1: #02020A = ratio: 10:1
+Background 2: #ffffff, Foreground 2: #02020A = ratio: 20:1
+
+*/
