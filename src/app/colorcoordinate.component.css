@@ -43,35 +43,61 @@ button:hover {
     background-color: #092e69;
 }
 
+#print-section {
+  display: none;
+  visibility: hidden;
+}
+
+.print-logo {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+}
+
 @media print {
-    body * {
-      visibility: hidden;
-    }
-  
-    #print-section, #print-section * {
-      visibility: visible;
-    }
-  
-    #print-section {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 1rem;
-      background: white;
-    }
-  
-    .print-logo {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-    }
-  
-    .print-logo img {
-      height: 50px;
-      width: auto;
-    }
+  body * {
+    visibility: hidden;
   }
+
+  .screen, .screen * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  #print-section, #print-section * {
+    visibility: visible;
+  }
+
+  #print-section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem;
+    background: white;
+    filter: grayscale(100);
+  }
+
+  .print-logo {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+  }
+
+  .print-logo img {
+    filter: grayscale(100%) !important;
+    -webkit-filter: grayscale(100%) !important;
+    visibility: visible !important;
+    display: block !important;
+    height: 50px !important;
+    width: auto !important;
+    content: normal !important;
+    
+  }
+  
+}
+
   
 /* Color Pallete:
 

@@ -20,13 +20,27 @@
         Please enter a number between 1 and 10
     </div>
 
-    <button type="submit" [disabled]="formRef.invalid">Submit</button>
-    <button type="button" (click)="printSection()">Print</button>
+    <button type="submit" class="screen" [disabled]="formRef.invalid">Submit</button>
 </form>
+
 
 <div *ngIf="tableData !== null">
     <app-table1 [inputData]="tableData"></app-table1>
     <app-table2 [inputData]="tableData"></app-table2>
 </div>
 
+<div id="print-section" *ngIf="tableData">
+  
+    <h2>Color Coordinate Tables</h2>
+  
+    <app-table1 [inputData]="tableData"></app-table1>
+    <app-table2 [inputData]="tableData"></app-table2>
+  </div>
+
 <div id="error" style="color: red; margin-top: 10px;"></div>
+
+<button type="button" (click)="printPage()" class="screen">Print</button>
+
+<div class="print-logo">
+    <img src="t19-logo.png" alt="Logo" />
+</div>

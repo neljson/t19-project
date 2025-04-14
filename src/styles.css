@@ -5,6 +5,12 @@ body {
     background-color: #E1E2EF;
 }
 
+@media print {
+    body {
+        filter: grayscale(100%);
+    }
+
+}
 /* Color Pallete:
 
 - #BFACAA

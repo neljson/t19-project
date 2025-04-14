@@ -6,20 +6,36 @@
     margin: 1rem auto;
 }
 
-/* Style each table cell */
 .styled-table td {
     border: 1px solid #ccc;
     height: 40px;
     padding: 0.5rem;
 }
 
-/* Left column takes 20% of the width */
 .col-left {
     width: 20%;
     background-color: #f4f4f4;
 }
 
-/* Right column takes 80% of the width */
 .col-right {
     width: 80%;
 }
+
+.print-section {
+  display: none;
+}
+
+@media print {
+    .screen {
+      display: none !important;
+    }
+  
+    .print-section {
+      display: inline !important;
+    }
+  
+    select {
+      display: none !important;
+    }
+  }
+  
