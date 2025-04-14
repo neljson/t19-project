@@ -43,6 +43,36 @@ button:hover {
     background-color: #092e69;
 }
 
+@media print {
+    body * {
+      visibility: hidden;
+    }
+  
+    #print-section, #print-section * {
+      visibility: visible;
+    }
+  
+    #print-section {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem;
+      background: white;
+    }
+  
+    .print-logo {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+    }
+  
+    .print-logo img {
+      height: 50px;
+      width: auto;
+    }
+  }
+  
 /* Color Pallete:
 
 - #BFACAA

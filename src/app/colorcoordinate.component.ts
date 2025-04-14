@@ -85,6 +85,10 @@ export class ColorCoordinateComponent {
             this.formData.colors
         ];
     }
+
+    printSection(): void {
+        window.print();
+      }
 }
 
 class InputError extends Error {
