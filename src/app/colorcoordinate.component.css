@@ -48,6 +48,12 @@ button:hover {
   visibility: hidden;
 }
 
+.print-logo {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+}
+
 @media print {
   body * {
     visibility: hidden;
@@ -69,6 +75,7 @@ button:hover {
     width: 100%;
     padding: 2rem;
     background: white;
+    filter: grayscale(100);
   }
 
   .print-logo {
@@ -79,10 +86,16 @@ button:hover {
   }
 
   .print-logo img {
+    filter: grayscale(100%) !important;
+    -webkit-filter: grayscale(100%) !important;
+    visibility: visible !important;
+    display: block !important;
     height: 50px !important;
     width: auto !important;
-    display: block !important;
+    content: normal !important;
+    
   }
+  
 }
 
   

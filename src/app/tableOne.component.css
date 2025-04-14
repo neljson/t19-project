@@ -21,6 +21,9 @@
     width: 80%;
 }
 
+.print-section {
+  display: none;
+}
 
 @media print {
     .screen {
