@@ -86,7 +86,7 @@ export class ColorCoordinateComponent {
         ];
     }
 
-    printSection(): void {
+    printPage(): void {
         window.print();
       }
 }

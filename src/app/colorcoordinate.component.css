@@ -43,35 +43,48 @@ button:hover {
     background-color: #092e69;
 }
 
+#print-section {
+  display: none;
+  visibility: hidden;
+}
+
 @media print {
-    body * {
-      visibility: hidden;
-    }
-  
-    #print-section, #print-section * {
-      visibility: visible;
-    }
-  
-    #print-section {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 1rem;
-      background: white;
-    }
-  
-    .print-logo {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-    }
-  
-    .print-logo img {
-      height: 50px;
-      width: auto;
-    }
+  body * {
+    visibility: hidden;
   }
+
+  .screen, .screen * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  #print-section, #print-section * {
+    visibility: visible;
+  }
+
+  #print-section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem;
+    background: white;
+  }
+
+  .print-logo {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+  }
+
+  .print-logo img {
+    height: 50px !important;
+    width: auto !important;
+    display: block !important;
+  }
+}
+
   
 /* Color Pallete:
 
