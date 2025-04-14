@@ -21,15 +21,12 @@
     </div>
 
     <button type="submit" [disabled]="formRef.invalid">Submit</button>
+    <button type="button" (click)="printSection()">Print</button>
 </form>
 
 <div *ngIf="tableData !== null">
     <app-table1 [inputData]="tableData"></app-table1>
     <app-table2 [inputData]="tableData"></app-table2>
 </div>
-
-
-
-
 
 <div id="error" style="color: red; margin-top: 10px;"></div>
