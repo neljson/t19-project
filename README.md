@@ -37,14 +37,20 @@ Visit https://cs.colostate.edu:4444/~your_eid/run_colors_setup.php in browser
 
 If successful you should see {"message":"Colors table setup completed."}
 
-4. Verify the Table 
+4. Verify the Table / SET Password
 
-If you want to manually check that the table was created:
+To manually check that the table was created and set your password:
 
 1. In terminal: mysql -u your_eid -D your_eid -h faure -p
 
 2. Enter password: (student id)
 
-3. In mysql run: SELECT * FROM colors;
+Now you should be in MYSQL. First set your password:
+
+3. set password = password('newpasswd');
+
+Then check the table creation:
+
+4. In mysql run: SELECT * FROM colors;
 
 
