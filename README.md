@@ -22,6 +22,8 @@ Copy the following files into your local_html directory on a course machine:
 - run_colors_setup.php
 - colors.sql
 
+Run `chmod 755 run_colors_setup.php colors.sql` to give proper read access permissions to the files. 
+
 ### 2. Edit Your Credentials
 
 Open run_colors_setup.php and update the database credentials:
