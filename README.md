@@ -39,7 +39,7 @@ Visit https://cs.colostate.edu:4444/~your_eid/run_colors_setup.php in browser
 
 If successful you should see {"message":"Colors table setup completed."}
 
-4. Verify the Table / SET Password
+### 4. Verify the Table / SET Password
 
 To manually check that the table was created and set your password:
 
