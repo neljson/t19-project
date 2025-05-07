@@ -1,1 +1,25 @@
-<p>color-selection works!</p>
+<h2>Add New Color</h2>
+<form (ngSubmit)="addColor()">
+    <label for="colorName">Color Name:</label>
+    <input type="text" id="colorName" [(ngModel)]="newColor.name" name="colorName" required />
+
+    <label for="hexValue">Hex Value:</label>
+    <input type="text" id="hexValue" [(ngModel)]="newColor.hex_value" name="hexValue" required pattern="#[0-9a-fA-F]{6}" />
+
+    <button type="submit">Add Color</button>
+</form>
+
+<h2>Edit Existing Color</h2>
+<select [(ngModel)]="selectedColor" name="selectedColor">
+    <option *ngFor="let color of colors" [ngValue]="color">{{ color.name }}</option>
+</select>
+
+<form *ngIf="selectedColor" (ngSubmit)="editColor()">
+    <label for="editName">New Name:</label>
+    <input type="text" id="editName" [(ngModel)]="selectedColor.name" name="editName" required />
+
+    <label for="editHex">New Hex:</label>
+    <input type="text" id="editHex" [(ngModel)]="selectedColor.hex_value" name="editHex" required pattern="#[0-9a-fA-F]{6}" />
+
+    <button type="submit">Update Color</button>
+</form>
