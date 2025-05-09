@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-color-selection',
-  imports: [],
+  imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './color-selection.component.html',
   styleUrl: './color-selection.component.css'
 })
+
 export class ColorSelectionComponent {
   newColor = { name: '', hex_value: '' };
   colors: any[] = [];
@@ -14,7 +17,7 @@ export class ColorSelectionComponent {
   constructor(private http: HttpClient) {}
 
   addColor() {
-    this.http.post('https://cs.colostate.edu:4444/~your_eid/add_color.php', this.newColor)
+    this.http.post('https://cs.colostate.edu/~your_eid/colors/add_color.php', this.newColor)
       .subscribe((response: any) => {
         console.log('Color added: ', response);
         this.fetchColors();

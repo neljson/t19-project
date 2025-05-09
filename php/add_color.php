@@ -32,7 +32,7 @@ if ($result->num_rows > 0) {
 } else {
     // Insert the new color into the database
     $insert_query = "INSERT INTO colors (name, hex_value) VALUES ('$name', '$hex_value')";
-    
+
     if ($conn->query($insert_query) === TRUE) {
         echo json_encode(["message" => "Color added successfully."]);
     } else {

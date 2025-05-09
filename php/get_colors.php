@@ -5,9 +5,9 @@ header("Content-Type: application/json");
 
 // Database credentials 
 $servername = "faure";
-$username = "your_eid";         // Replace with your CSU eID
-$password = "your_student_id";  // Replace with your student ID
-$dbname = "your_eid";           // Replace with your CSU eID
+$username = "eid";         // Replace with your CSU eID
+$password = "student id";  // Replace with your student ID
+$dbname = "eid";           // Replace with your CSU eID
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
