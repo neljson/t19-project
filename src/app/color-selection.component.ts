@@ -17,7 +17,7 @@ export class ColorSelectionComponent {
   constructor(private http: HttpClient) {}
 
   addColor() {
-    this.http.post('https://cs.colostate.edu/~your_eid/colors/add_color.php', this.newColor)
+    this.http.post('https://cs.colostate.edu:4444/~your_eid/add_color.php', this.newColor)
       .subscribe((response: any) => {
         console.log('Color added: ', response);
         this.fetchColors();
