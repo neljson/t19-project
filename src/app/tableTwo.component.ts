@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgForOf, TitleCasePipe, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { ColorCoordinateService } from './color-coordinate.service';
 
 @Component({
     selector: 'app-table2',
@@ -16,6 +16,9 @@ export class TableTwoComponent implements OnChanges {
     colCount: number = 0;
     rows: number[] = [];
     cols: string[] = [];
+    cellColors: { [key: string]: string } = {};
+
+    constructor(private colorCoordinateService: ColorCoordinateService) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.inputData && this.inputData.length >= 2) {
@@ -48,10 +51,19 @@ export class TableTwoComponent implements OnChanges {
     }
 
     selectedCell: string = ''; // Holds the selected cell label (e.g., "AB20")
+
     // Method to handle the cell click and update the selected cell message
     selectCell(rowIndex: number, colIndex: number): void {
+        const color = this.colorCoordinateService.getColor();
+        this.cellColors[`${rowIndex},${colIndex}`] = color;
         const colLabel = this.cols[colIndex];
         this.selectedCell = `${colLabel}${rowIndex}`; // Set message like "AB20"
+
+        // Get the active row from Table One
+        const rowIndexInTableOne = this.colorCoordinateService.getTableOneRowIndex();
+
+        // Send this coordinate to service
+        this.colorCoordinateService.addCoordinateToRow(rowIndexInTableOne, this.selectedCell);
     }
 
 }
