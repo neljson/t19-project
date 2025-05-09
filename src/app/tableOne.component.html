@@ -3,7 +3,7 @@
         <td class="col-left">
             <div class="screen">
                 <input type="radio" name="selectedRow" [value]="row.index" [checked]="selectedRow === row.index"
-                (change)="setSelectedRow(row.index)" />
+                    (change)="setSelectedRow(row.index)" />
 
                 <select [(ngModel)]="row.selectedColor" [disabled]="selectedRow !== row.index"
                     (change)="onColorChange(row.index, row.selectedColor)">
@@ -14,10 +14,14 @@
             </div>
 
             <div class="print-section">
-                {{ row.selectedColor | titlecase }}  
+                {{ row.selectedColor | titlecase }}
             </div>
         </td>
 
-        <td class="col-right"></td>
+        <td class="col-right" style="text-align: left;">
+            <span [ngStyle]="{ color: selectedRow===row.index ? 'black' : 'gray' }">
+                {{ colorCoordinateService.getCoordinatesForRow(row.index).join(', ') }}
+            </span>
+        </td>
     </tr>
 </table>

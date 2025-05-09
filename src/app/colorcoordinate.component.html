@@ -30,12 +30,12 @@
 </div>
 
 <div id="print-section" *ngIf="tableData">
-  
+
     <h2>Color Coordinate Tables</h2>
-  
+
     <app-table1 [inputData]="tableData"></app-table1>
-    <app-table2 [inputData]="tableData"></app-table2>
-  </div>
+    <app-table2 [inputData]="tableData" style="page-break-before: always;"></app-table2>
+</div>
 
 <div id="error" style="color: red; margin-top: 10px;"></div>
 

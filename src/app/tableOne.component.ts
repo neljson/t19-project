@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { NgForOf, TitleCasePipe } from '@angular/common';
+import { NgForOf, TitleCasePipe, NgIf, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { ColorCoordinateService } from './color-coordinate.service';
 
 @Component({
     selector: 'app-table1',
     standalone: true,
-    imports: [NgForOf, FormsModule, TitleCasePipe],
+    imports: [NgForOf, FormsModule, TitleCasePipe, NgIf, NgStyle],
     templateUrl: './tableOne.component.html',
     styleUrls: ['./tableOne.component.css']
 })
@@ -28,9 +28,12 @@ export class TableOneComponent implements OnChanges {
     selectedRow: number | null = null;
 
     // Each row has a color and unique index
-    rows: { index: number, selectedColor: string }[] = [];
+    rows: {
+        index: number,
+        selectedColor: string
+    }[] = [];
 
-    constructor() {
+    constructor(public colorCoordinateService: ColorCoordinateService) {
         // Generate the row list when the component is created
         this.createRowList(this.numberOfRows);
     }
@@ -64,9 +67,31 @@ export class TableOneComponent implements OnChanges {
 
     setSelectedRow(index: number): void {
         this.selectedRow = index;
+
+        const selectedColor = this.rows[index].selectedColor;
+        this.colorCoordinateService.setColor(selectedColor);
+        this.colorCoordinateService.setTableOneRowIndex(index); // tracks active row
+    }
+
+    getRowIndex(): number {
+        return this.selectedRow ?? -1; // Default to -1 if selectedRow is null
     }
 
     onColorChange(index: number, newColor: string): void {
+        const row = this.rows[index];
+        const oldColor = row.selectedColor;
+        row.selectedColor = newColor;
+
+        // Update only if this row has coordinates
+        const affectedCoords = this.colorCoordinateService.getCoordinatesForRow(index);
+        this.colorCoordinateService.updateColorForCells(oldColor, newColor, affectedCoords);
+
         this.rows[index].selectedColor = newColor;
+
+        if (this.selectedRow === index) {
+            this.colorCoordinateService.setColor(newColor);
+        }
     }
+
+
 }
