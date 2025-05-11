@@ -18,7 +18,7 @@ export class TableTwoComponent implements OnChanges {
     cols: string[] = [];
     cellColors: { [key: string]: string } = {};
 
-    constructor(private colorCoordinateService: ColorCoordinateService) { }
+    constructor(public colorCoordinateService: ColorCoordinateService) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.inputData && this.inputData.length >= 2) {
@@ -58,6 +58,7 @@ export class TableTwoComponent implements OnChanges {
         this.cellColors[`${rowIndex},${colIndex}`] = color;
         const colLabel = this.cols[colIndex];
         this.selectedCell = `${colLabel}${rowIndex}`; // Set message like "AB20"
+        this.colorCoordinateService.setCellColor(`${rowIndex},${colIndex}`, color);
 
         // Get the active row from Table One
         const rowIndexInTableOne = this.colorCoordinateService.getTableOneRowIndex();

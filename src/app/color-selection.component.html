@@ -1,1 +1,60 @@
-<p>color-selection works!</p>
+<h2>Add, Edit, or Delete colors for the Color Coordinate Page</h2>
+<form (ngSubmit)="addColor()" #addForm="ngForm">
+    <h3>Add Color</h3>
+    <label for="colorSelectAdd">Choose a color:</label>
+    <select id="colorSelectAdd" name="colorSelectAdd" [(ngModel)]="newColor" required>
+        <option value="" disabled selected>Select a color to add...</option>
+        <option *ngFor="let color of availableColors" [value]="color" [disabled]="allColors.includes(color)">
+            {{ color | titlecase }}
+        </option>
+    </select>
+
+    <!-- Preview color -->
+    <div class="color-preview" *ngIf="newColor" [style.backgroundColor]="getColorHex(newColor)"></div>
+
+    <button type="submit">Add</button>
+</form>
+
+
+<form (ngSubmit)="editColor()" #editForm="ngForm">
+    <h3>Edit Color</h3>
+    <label for="colorSelectEdit">
+        Select:
+        <select name="colorSelectEdit" [(ngModel)]="selectedEditColor" name="editColor" required>
+            <option value="" disabled selected>Select a color to edit...</option>
+            <option *ngFor="let color of allColors" [value]="color">{{ color }}</option>
+        </select>
+    </label>
+    <label for="newColorValue">
+        New Name:
+        <select id="newColorValue" name="editName" [(ngModel)]="editColorValue" required>
+            <option value="" disabled selected>Select a new name...</option>
+            <option *ngFor="let color of availableColors" [value]="color"
+                [disabled]="allColors.includes(color) && color !== selectedEditColor">
+                {{ color | titlecase }}
+            </option>
+        </select>
+    </label>
+    <button type="submit">Update</button>
+</form>
+
+
+<h3>Delete Color</h3>
+<label>
+    <select [(ngModel)]="selectedDeleteColor" name="deleteColor" required>
+        <option *ngFor="let color of allColors" [value]="color">{{ color }}</option>
+    </select>
+</label>
+<button (click)="confirmingDelete = true" [disabled]="allColors.length <= 2">
+    Delete
+</button>
+
+<div *ngIf="confirmingDelete" class="confirm-delete">
+    <p>Are you sure you want to delete <strong>{{ selectedDeleteColor }}</strong>?</p>
+    <button (click)="deleteColor()">Yes</button>
+    <button (click)="confirmingDelete = false">Cancel</button>
+</div>
+
+<p *ngIf="deleteError" class="error-message">
+    You must keep at least 2 colors in the color table.
+</p>

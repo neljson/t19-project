@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { NgForOf, TitleCasePipe, NgIf, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ColorCoordinateService } from './color-coordinate.service';
@@ -10,7 +10,7 @@ import { ColorCoordinateService } from './color-coordinate.service';
     templateUrl: './tableOne.component.html',
     styleUrls: ['./tableOne.component.css']
 })
-export class TableOneComponent implements OnChanges {
+export class TableOneComponent implements OnChanges, OnInit {
     @Input() inputData!: number[]; // Will receive [rows, columns, colors]
 
     // Simulate user input — number of rows to create
@@ -38,6 +38,10 @@ export class TableOneComponent implements OnChanges {
         this.createRowList(this.numberOfRows);
     }
 
+    ngOnInit(): void {
+        console.log(('Table One: sharedColorList saved to sessionStorage'));
+        sessionStorage.setItem('sharedColorList', JSON.stringify(this.allColors));
+    }
     ngOnChanges(changes: SimpleChanges) {
         if (changes['inputData'] && this.inputData?.length === 3) {
             this.numberOfRows = this.inputData[2];

@@ -1,4 +1,4 @@
-import { isPlatformBrowser, NgIf } from '@angular/common';
+import { isPlatformBrowser, NgIf, NgStyle } from '@angular/common';
 import { Component, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TableOneComponent } from './tableOne.component';
@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'color-coordinate',
     standalone: true,
-    imports: [RouterOutlet, FormsModule, TableOneComponent, TableTwoComponent, NgIf],
+    imports: [RouterOutlet, FormsModule, TableOneComponent, TableTwoComponent, NgIf, NgStyle],
     templateUrl: './colorcoordinate.component.html',
     styleUrls: ['./colorcoordinate.component.css']
 })
@@ -88,7 +88,7 @@ export class ColorCoordinateComponent {
 
     printPage(): void {
         window.print();
-      }
+    }
 }
 
 class InputError extends Error {

@@ -1,0 +1,93 @@
+/* Container for the full color management section */
+.color-selection-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(5, 32, 74, 0.15);
+    border: 2px solid #BFACAA;
+}
+
+/* Form headings */
+h2,
+h3 {
+    color: #05204A;
+    margin-top: 0;
+}
+
+/* Shared input and select styles */
+input,
+select {
+    width: 50%;
+    max-width: 300px;
+    padding: 0.5rem;
+    margin: 0.5rem auto;
+    /* center horizontally */
+    display: block;
+}
+
+/* Label styling */
+label {
+    display: block;
+    font-weight: bold;
+    color: #05204A;
+}
+
+/* Buttons */
+button {
+    width: auto;
+    padding: 0.6rem 1.25rem;
+    margin: 1rem auto;
+    /* center horizontally */
+    display: block;
+    background-color: #05204A;
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #092e69;
+}
+
+/* Confirmation section */
+.confirm-delete {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #fff1f0;
+    border: 1px solid #ffcccc;
+    border-radius: 8px;
+    color: #8b0000;
+}
+
+.confirm-delete button {
+    width: 48%;
+    margin-right: 4%;
+}
+
+.confirm-delete button:last-child {
+    margin-right: 0;
+}
+
+/* Error message */
+.error-message {
+    color: darkorange;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.color-preview {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 1rem auto;
+}
+
+select option:disabled {
+    color: gray;
+}
