@@ -3,6 +3,7 @@ import { NgIf, NgStyle, NgForOf, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { wordToHexDictionary } from './wordToHexDictionary';
 
+
 @Component({
   selector: 'app-color-selection',
   imports: [FormsModule, NgIf, NgStyle, NgForOf, TitleCasePipe],
@@ -22,10 +23,17 @@ export class ColorSelectionComponent implements OnInit {
   confirmingDelete = false;
   deleteError = false;
 
+
+
   ngOnInit(): void {
     const stored = sessionStorage.getItem('sharedColorList');
     if (stored) {
       this.allColors = JSON.parse(stored);
+    } else { // if the user does not visit Color Coordinate page first, use default colors
+      this.allColors = [
+        'red', 'orange', 'yellow', 'green', 'blue',
+        'purple', 'grey', 'brown', 'black', 'teal'
+      ];
     }
   }
 
@@ -57,7 +65,6 @@ export class ColorSelectionComponent implements OnInit {
       const index = this.allColors.indexOf(this.selectedEditColor);
       this.allColors[index] = this.editColorValue;
       this.updateStorage();
-
       // Reset form
       this.selectedEditColor = '';
       this.editColorValue = '';
@@ -74,7 +81,6 @@ export class ColorSelectionComponent implements OnInit {
     if (this.selectedDeleteColor) {
       this.allColors = this.allColors.filter(color => color !== this.selectedDeleteColor);
       this.updateStorage();
-
       // Reset state
       this.confirmingDelete = false;
       this.deleteError = false;

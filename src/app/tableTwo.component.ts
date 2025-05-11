@@ -2,6 +2,8 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgForOf, TitleCasePipe, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ColorCoordinateService } from './color-coordinate.service';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
     selector: 'app-table2',
@@ -18,7 +20,11 @@ export class TableTwoComponent implements OnChanges {
     cols: string[] = [];
     cellColors: { [key: string]: string } = {};
 
-    constructor(public colorCoordinateService: ColorCoordinateService) { }
+    constructor(public colorCoordinateService: ColorCoordinateService, private cd: ChangeDetectorRef) { }
+
+    refresh(): void {
+        this.cd.detectChanges();
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.inputData && this.inputData.length >= 2) {
@@ -66,5 +72,7 @@ export class TableTwoComponent implements OnChanges {
         // Send this coordinate to service
         this.colorCoordinateService.addCoordinateToRow(rowIndexInTableOne, this.selectedCell);
     }
+
+
 
 }

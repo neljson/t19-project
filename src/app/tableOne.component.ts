@@ -3,6 +3,7 @@ import { NgForOf, TitleCasePipe, NgIf, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ColorCoordinateService } from './color-coordinate.service';
 
+
 @Component({
     selector: 'app-table1',
     standalone: true,
@@ -11,7 +12,9 @@ import { ColorCoordinateService } from './color-coordinate.service';
     styleUrls: ['./tableOne.component.css']
 })
 export class TableOneComponent implements OnChanges, OnInit {
-    @Input() inputData!: number[]; // Will receive [rows, columns, colors]
+    @Input() inputData!: number[]; // Will receive [rows, columns, colors] from parent component ColorCoordinate
+    @Input() allColors: string[] = []; // Will receive the list of colors from parent component ColorCoordinate
+    @Input() refreshTableTwo!: () => void;
 
     // Simulate user input — number of rows to create
     numberOfRows: number = 0;
@@ -19,10 +22,6 @@ export class TableOneComponent implements OnChanges, OnInit {
     // A list that we'll use to build our rows
     rowsToDisplay: number[] = [];
 
-    allColors: string[] = [
-        'red', 'orange', 'yellow', 'green', 'blue',
-        'purple', 'grey', 'brown', 'black', 'teal'
-    ];
 
     // Tracks the selected row index
     selectedRow: number | null = null;
@@ -33,14 +32,19 @@ export class TableOneComponent implements OnChanges, OnInit {
         selectedColor: string
     }[] = [];
 
-    constructor(public colorCoordinateService: ColorCoordinateService) {
-        // Generate the row list when the component is created
-        this.createRowList(this.numberOfRows);
-    }
+    constructor(public colorCoordinateService: ColorCoordinateService) { }
+
 
     ngOnInit(): void {
-        console.log(('Table One: sharedColorList saved to sessionStorage'));
-        sessionStorage.setItem('sharedColorList', JSON.stringify(this.allColors));
+
+        const stored = sessionStorage.getItem('sharedColorList');
+        this.allColors = stored ? JSON.parse(stored) : [
+            'red', 'orange', 'yellow', 'green', 'blue',
+            'purple', 'grey', 'brown', 'black', 'teal'
+        ];
+
+        // Generate the row list of color drop down when the component is created
+        this.createRowList(this.numberOfRows);
     }
     ngOnChanges(changes: SimpleChanges) {
         if (changes['inputData'] && this.inputData?.length === 3) {
@@ -50,6 +54,8 @@ export class TableOneComponent implements OnChanges, OnInit {
     }
 
     createRowList(count: number): void {
+        this.selectedRow = null;
+        this.colorCoordinateService.setColor('');
 
         this.rows = [];
 
@@ -59,6 +65,7 @@ export class TableOneComponent implements OnChanges, OnInit {
                 selectedColor: this.allColors[i] // Default to a unique color
             });
         }
+
     }
 
     getAvailableColors(currentIndex: number): string[] {
@@ -87,13 +94,18 @@ export class TableOneComponent implements OnChanges, OnInit {
         row.selectedColor = newColor;
 
         // Update only if this row has coordinates
-        const affectedCoords = this.colorCoordinateService.getCoordinatesForRow(index);
-        this.colorCoordinateService.updateColorForCells(oldColor, newColor, affectedCoords);
+        // const affectedCoords = this.colorCoordinateService.getCoordinatesForRow(index);
+        this.colorCoordinateService.updateRowColor(index, newColor, oldColor);
 
         this.rows[index].selectedColor = newColor;
 
         if (this.selectedRow === index) {
+            console.log('Selected row color changed:', newColor);
             this.colorCoordinateService.setColor(newColor);
+        }
+        // Trigger TableTwo to re-render
+        if (this.refreshTableTwo) {
+            this.refreshTableTwo();
         }
     }
 

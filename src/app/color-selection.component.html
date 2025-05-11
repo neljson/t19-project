@@ -40,21 +40,22 @@
 
 
 <h3>Delete Color</h3>
+
 <label>
     <select [(ngModel)]="selectedDeleteColor" name="deleteColor" required>
-        <option *ngFor="let color of allColors" [value]="color">{{ color }}</option>
+        <option value="" disabled selected>Select a color to delete...</option>
+        <option *ngFor="let color of allColors" [value]="color">
+            {{ color }}
+        </option>
     </select>
 </label>
-<button (click)="confirmingDelete = true" [disabled]="allColors.length <= 2">
+
+<!-- error handling: delete button disabled below 2 colors -->
+<button (click)="deleteColor()" [disabled]="allColors.length <= 2 || !selectedDeleteColor">
     Delete
 </button>
 
-<div *ngIf="confirmingDelete" class="confirm-delete">
-    <p>Are you sure you want to delete <strong>{{ selectedDeleteColor }}</strong>?</p>
-    <button (click)="deleteColor()">Yes</button>
-    <button (click)="confirmingDelete = false">Cancel</button>
-</div>
-
-<p *ngIf="deleteError" class="error-message">
+<!-- error message if less than 2 colors -->
+<p *ngIf="allColors.length <= 2" class="error-message">
     You must keep at least 2 colors in the color table.
 </p>

@@ -1,51 +1,55 @@
 form#colorForm {
-    max-width: 400px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(5, 32, 74, 0.15);
-    border: 2px solid #BFACAA;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(5, 32, 74, 0.15);
+  border: 2px solid #BFACAA;
 }
 
 label {
-    display: block;
-    margin-top: 1rem;
-    font-weight: bold;
-    color: #05204A;
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #05204A;
 }
 
 input,
 select {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.3rem;
-    border: 1px solid #BFACAA;
-    border-radius: 6px;
-    background-color: #F9F9FB;
-    color: #02020A;
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border: 1px solid #BFACAA;
+  border-radius: 6px;
+  background-color: #F9F9FB;
+  color: #02020A;
 }
 
 button {
-    margin-top: 1.5rem;
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #05204A;
-    color: #ffffff;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #05204A;
+  color: #ffffff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #092e69;
+  background-color: #092e69;
 }
 
 #print-section {
   display: none;
   visibility: hidden;
+}
+
+#print-button {
+  width: 50%;
 }
 
 .print-logo {
@@ -59,13 +63,19 @@ button:hover {
     visibility: hidden;
   }
 
-  .screen, .screen * {
+  .screen,
+  .screen * {
     display: none !important;
     visibility: hidden !important;
   }
 
-  #print-section, #print-section * {
+  #print-section,
+  #print-section * {
     visibility: visible;
+  }
+
+  #print-button {
+    width: 50%;
   }
 
   #print-section {
@@ -93,12 +103,12 @@ button:hover {
     height: 50px !important;
     width: auto !important;
     content: normal !important;
-    
+
   }
-  
+
 }
 
-  
+
 /* Color Pallete:
 
 - #BFACAA
