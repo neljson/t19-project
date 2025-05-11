@@ -70,11 +70,6 @@ export class ColorCoordinateComponent implements OnInit {
         }
     }
 
-    refreshTableTwo = () => {
-        if (this.tableTwoComponent) {
-            this.tableTwoComponent.refresh();
-        }
-    };
 
     tableData: number[] | null = null;
 

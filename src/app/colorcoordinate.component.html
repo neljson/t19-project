@@ -25,7 +25,7 @@
 
 
 <div *ngIf="tableData !== null">
-    <app-table1 [allColors]="allColors" [inputData]="tableData" [refreshTableTwo]="refreshTableTwo"></app-table1>
+    <app-table1 [allColors]="allColors" [inputData]="tableData"></app-table1>
     <app-table2 #tableTwoRef [inputData]="tableData"></app-table2>
 </div>
 

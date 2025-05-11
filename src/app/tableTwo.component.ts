@@ -2,7 +2,6 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgForOf, TitleCasePipe, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ColorCoordinateService } from './color-coordinate.service';
-import { ChangeDetectorRef } from '@angular/core';
 
 
 @Component({
@@ -20,11 +19,8 @@ export class TableTwoComponent implements OnChanges {
     cols: string[] = [];
     cellColors: { [key: string]: string } = {};
 
-    constructor(public colorCoordinateService: ColorCoordinateService, private cd: ChangeDetectorRef) { }
+    constructor(public colorCoordinateService: ColorCoordinateService) { }
 
-    refresh(): void {
-        this.cd.detectChanges();
-    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.inputData && this.inputData.length >= 2) {

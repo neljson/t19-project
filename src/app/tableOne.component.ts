@@ -14,7 +14,6 @@ import { ColorCoordinateService } from './color-coordinate.service';
 export class TableOneComponent implements OnChanges, OnInit {
     @Input() inputData!: number[]; // Will receive [rows, columns, colors] from parent component ColorCoordinate
     @Input() allColors: string[] = []; // Will receive the list of colors from parent component ColorCoordinate
-    @Input() refreshTableTwo!: () => void;
 
     // Simulate user input — number of rows to create
     numberOfRows: number = 0;
@@ -102,10 +101,6 @@ export class TableOneComponent implements OnChanges, OnInit {
         if (this.selectedRow === index) {
             console.log('Selected row color changed:', newColor);
             this.colorCoordinateService.setColor(newColor);
-        }
-        // Trigger TableTwo to re-render
-        if (this.refreshTableTwo) {
-            this.refreshTableTwo();
         }
     }
 
