@@ -1,9 +1,10 @@
 <h2 *ngIf="selectedCell">Selected Cell: {{ selectedCell }}</h2>
-<table class="excel-table" style="page-break-before: always;">
+<table class="excel-table">
     <tr *ngFor="let rowIndex of rows; let r = index">
         <td *ngFor="let colName of cols; let c = index"
-            [style.backgroundColor]="colorCoordinateService.getCellColor[r + ',' + c] || 'white'"
+            [style.backgroundColor]="colorCoordinateService.getCellColor(r + ',' + c) || 'white'"
             [class.header]="r === 0 || c === 0" (click)="r !== 0 && c !== 0 ? selectCell(r, c) : null">
+
             <!-- Top-left corner -->
             <ng-container *ngIf="r === 0 && c === 0"> </ng-container>
 

@@ -1,25 +1,33 @@
-import { isPlatformBrowser, NgIf } from '@angular/common';
-import { Component, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, NgIf, NgStyle } from '@angular/common';
+import { Component, Inject, PLATFORM_ID, ViewChild, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TableOneComponent } from './tableOne.component';
 import { TableTwoComponent } from './tableTwo.component';
 import { FormsModule } from '@angular/forms';
+import { ColorCoordinateService } from './color-coordinate.service';
 
 @Component({
     selector: 'color-coordinate',
     standalone: true,
-    imports: [RouterOutlet, FormsModule, TableOneComponent, TableTwoComponent, NgIf],
+    imports: [RouterOutlet, FormsModule, TableOneComponent, TableTwoComponent, NgIf, NgStyle],
     templateUrl: './colorcoordinate.component.html',
     styleUrls: ['./colorcoordinate.component.css']
 })
 
 //https://angular.dev/api/core/AfterViewInit#ngAfterViewInit
-export class ColorCoordinateComponent {
+export class ColorCoordinateComponent implements OnInit {
+    @ViewChild('tableTwoRef') tableTwoComponent!: TableTwoComponent;
     title = 'Color Coordinate page';
+    allColors: string[] = [];
+    constructor(@Inject(PLATFORM_ID) private platformId: Object, private colorCoordinateService: ColorCoordinateService) { }
 
-
-    constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
-
+    ngOnInit(): void {
+        const stored = sessionStorage.getItem('sharedColorList');
+        this.allColors = stored ? JSON.parse(stored) : [
+            'red', 'orange', 'yellow', 'green', 'blue',
+            'purple', 'grey', 'brown', 'black', 'teal'
+        ];
+    }
     ngAfterViewInit(): void {
         if (isPlatformBrowser(this.platformId)) {
             let rowInput: HTMLInputElement = document.getElementById('rows') as HTMLInputElement;
@@ -59,16 +67,9 @@ export class ColorCoordinateComponent {
                 });
             });
 
-            colorInput.addEventListener('input', () => {
-                handleInputError(() => {
-                    const colorNum: number = parseInt(colorInput.value);
-                    if (!Number.isInteger(colorNum) || colorNum < 1 || colorNum > 10) {
-                        throw new InputError('Color value must be between 1 and 10');
-                    }
-                });
-            });
         }
     }
+
 
     tableData: number[] | null = null;
 
@@ -79,6 +80,8 @@ export class ColorCoordinateComponent {
     };
 
     submitForm(): void {
+        this.colorCoordinateService.reset();
+
         this.tableData = [
             this.formData.rows,
             this.formData.columns,
@@ -88,7 +91,7 @@ export class ColorCoordinateComponent {
 
     printPage(): void {
         window.print();
-      }
+    }
 }
 
 class InputError extends Error {
