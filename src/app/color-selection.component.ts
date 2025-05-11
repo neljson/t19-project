@@ -27,7 +27,7 @@ export class ColorSelectionComponent implements OnInit {
   deleteError = false;
   newColorName: string = '';
   newColorHex: string = '';
-  addError: string = '';  
+  addError: string = '';
   customHexInput: string = '';
 
 
@@ -84,7 +84,7 @@ export class ColorSelectionComponent implements OnInit {
         this.addError = `Invalid hex code format: "${this.customHexInput}". Please use #RRGGBB or #RGB.`;
         return;
       }
-    
+
       const nameFromHex = this.hexToNameMap[enteredHex]; // Use the reverse map
       if (nameFromHex) {
         colorNameToAdd = nameFromHex;
@@ -128,6 +128,7 @@ export class ColorSelectionComponent implements OnInit {
     }
   }
 
+  // getPreviewHex(customHexInput)
   // Gets the hex value for the current valid input (either name or hex) for preview
   getPreviewHex(): string {
     const hexPattern = /^#([0-9A-F]{6}|[0-9A-Fa-f]{3})$/i; // Case-insensitive for preview
@@ -227,9 +228,9 @@ export class ColorSelectionComponent implements OnInit {
       // unless it's the same as the original color name (meaning no effective change of name, or changing to self)
       // or if the determinedNewName is the same as the name it would resolve to if the originalName was a hex.
       if (this.allColors.includes(determinedNewName) && determinedNewName !== originalName) {
-         // Further check: if originalName was a hex in allColors (which it shouldn't be, but as a safeguard)
-         // and determinedNewName is its actual name, that's fine.
-         // However, allColors should only contain names. So, this mainly checks if determinedNewName is another *different* existing color.
+        // Further check: if originalName was a hex in allColors (which it shouldn't be, but as a safeguard)
+        // and determinedNewName is its actual name, that's fine.
+        // However, allColors should only contain names. So, this mainly checks if determinedNewName is another *different* existing color.
         this.editError = `The color name "${determinedNewName}" (derived from your input) already exists in the list.`;
         return;
       }
