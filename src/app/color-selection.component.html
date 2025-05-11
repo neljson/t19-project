@@ -40,25 +40,59 @@
 
 
 <form (ngSubmit)="editColor()" #editForm="ngForm">
-    <h3>Edit Color</h3>
-    <label for="colorSelectEdit">
-        Select:
-        <select name="colorSelectEdit" [(ngModel)]="selectedEditColor" name="editColor" required>
-            <option value="" disabled selected>Select a color to edit...</option>
-            <option *ngFor="let color of allColors" [value]="color">{{ color }}</option>
-        </select>
-    </label>
-    <label for="newColorValue">
-        New Name:
-        <select id="newColorValue" name="editName" [(ngModel)]="editColorValue" required>
-            <option value="" disabled selected>Select a new name...</option>
-            <option *ngFor="let color of availableColors" [value]="color"
-                [disabled]="allColors.includes(color) && color !== selectedEditColor">
-                {{ color | titlecase }}
-            </option>
-        </select>
-    </label>
-    <button type="submit">Update</button>
+  <h3>Edit Color</h3>
+
+  <div>
+    <label for="colorSelectEdit">Select color to edit:</label>
+    <select id="colorSelectEdit" name="selectedEditColor" [(ngModel)]="selectedEditColor" required>
+      <option value="" disabled selected>Select a color...</option>
+      <option *ngFor="let color of allColors" [value]="color">{{ color | titlecase }}</option>
+    </select>
+  </div>
+
+  <p style="margin-left: 20px;">Set new value by Name OR Hex:</p>
+
+  <div>
+    <label for="newColorNameForEdit">New Name (from list):</label>
+    <select id="newColorNameForEdit" name="editColorNewName"
+            [(ngModel)]="editColorNewName"
+            (change)="onEditNameSelected()"
+            [disabled]="!!editColorNewHex || !selectedEditColor"> <option value="">Select new name...</option>
+      <option *ngFor="let nameOpt of availableColors" [value]="nameOpt"
+              [disabled]="allColors.includes(nameOpt) && nameOpt !== selectedEditColor">
+        {{ nameOpt | titlecase }}
+      </option>
+    </select>
+  </div>
+
+  <p style="text-align: center; margin: 5px 0;">OR</p>
+
+  <div>
+    <label for="editColorNewHex">New Hex Value (#RRGGBB):</label>
+    <input
+      type="text"
+      id="editColorNewHex"
+      name="editColorNewHex"
+      [(ngModel)]="editColorNewHex"
+      (input)="onEditHexInput()"
+      placeholder="#RRGGBB"
+      pattern="^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$"
+      [disabled]="!!editColorNewName || !selectedEditColor"/> </div>
+
+  <div *ngIf="getEditPreviewHex()" class="color-preview-container">
+    <label>New Color Preview:</label>
+    <div class="color-box" [style.backgroundColor]="getEditPreviewHex()"></div>
+  </div>
+   <div *ngIf="!getEditPreviewHex() && (editForm.controls['editColorNewName']?.touched || editForm.controls['editColorNewHex']?.touched) && (editColorNewName || editColorNewHex)" class="color-preview-placeholder">
+      Enter a valid new name or hex for preview
+  </div>
+
+
+  <button type="submit"
+          [disabled]="!selectedEditColor || (!editColorNewName && !editColorNewHex) || editForm.invalid">
+          Update Color
+  </button>
+  <p *ngIf="editError" class="error-message">{{ editError }}</p>
 </form>
 
 
