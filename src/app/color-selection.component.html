@@ -1,18 +1,41 @@
 <h2>Add, Edit, or Delete colors for the Color Coordinate Page</h2>
 <form (ngSubmit)="addColor()" #addForm="ngForm">
     <h3>Add Color</h3>
-    <label for="colorSelectAdd">Choose a color:</label>
-    <select id="colorSelectAdd" name="colorSelectAdd" [(ngModel)]="newColor" required>
-        <option value="" disabled selected>Select a color to add...</option>
-        <option *ngFor="let color of availableColors" [value]="color" [disabled]="allColors.includes(color)">
-            {{ color | titlecase }}
-        </option>
+    <div>
+    <label for="colorSelectAdd">Choose a color name:</label>
+    <select id="colorSelectAdd" name="newColorName"
+            [(ngModel)]="newColorName"
+            (change)="onNameDropdownChange()"
+            [disabled]="customHexInput ? true : false">
+      <option value="">Select a color to add...</option> <option *ngFor="let color of availableColors" [value]="color"
+              [disabled]="allColors.includes(color)"> {{ color | titlecase }}
+      </option>
     </select>
+  </div>
 
-    <!-- Preview color -->
-    <div class="color-preview" *ngIf="newColor" [style.backgroundColor]="getColorHex(newColor)"></div>
+  <p style="text-align: center; margin: 5px 0;">OR</p>
 
-    <button type="submit">Add</button>
+  <div>
+    <label for="hexInput">Enter a hex color (#RRGGBB):</label>
+    <input
+      type="text"
+      id="hexInput"
+      name="customHexInput"
+      [(ngModel)]="customHexInput"
+      (input)="onHexInputChange()"
+      placeholder="#ff9900"
+      pattern="^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$"
+      [disabled]="newColorName ? true : false"
+    />
+  </div>
+
+  <div *ngIf="getPreviewHex()" class="color-preview-container">
+    <label>Preview:</label>
+    <div class="color-box" [style.backgroundColor]="getPreviewHex()"></div>
+  </div>
+
+  <button type="submit" [disabled]="(!newColorName && !customHexInput) || addForm.invalid">Add</button>
+  <p *ngIf="addError" class="error-message">{{ addError }}</p>
 </form>
 
 
