@@ -10,6 +10,7 @@
     width: 60px;
     height: 40px;
     text-align: center;
+    -webkit-print-color-adjust: exact;
 }
 
 .excel-table td.header {
