@@ -56,3 +56,4 @@ Then check the table creation:
 4. In mysql run: SELECT * FROM colors;
 
 
+
