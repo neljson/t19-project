@@ -18,13 +18,16 @@ export class ColorSelectionComponent implements OnInit {
   newColor: string = '';
   selectedEditColor: string = '';
   editColorValue: string = '';
+  editColorNewName: string = '';
+  editColorNewHex: string = '';
+  editError: string = '';
 
   selectedDeleteColor: string | null = '';
   confirmingDelete = false;
   deleteError = false;
   newColorName: string = '';
   newColorHex: string = '';
-  addError: string = '';  
+  addError: string = '';
   customHexInput: string = '';
 
 
@@ -57,7 +60,6 @@ export class ColorSelectionComponent implements OnInit {
     sessionStorage.setItem('sharedColorList', JSON.stringify(this.allColors.sort())); // Store sorted
   }
 
-  // --- ADD COLOR LOGIC ---
   addColor(): void {
     this.addError = ''; // Reset error message each time add is attempted
     const selectedNameFromDropdown = this.newColorName?.trim();
@@ -66,7 +68,6 @@ export class ColorSelectionComponent implements OnInit {
 
     let colorNameToAdd: string | null = null;
 
-    // 1. MUTUALLY EXCLUSIVE INPUT VALIDATION
     if (selectedNameFromDropdown && enteredHex) {
       this.addError = "Please select a color name OR enter a hex code, not both.";
       return;
@@ -76,7 +77,6 @@ export class ColorSelectionComponent implements OnInit {
       return;
     }
 
-    // DETERMINE THE COLOR NAME TO ADD
     if (selectedNameFromDropdown) {
       colorNameToAdd = selectedNameFromDropdown;
     } else if (enteredHex) {
@@ -84,7 +84,7 @@ export class ColorSelectionComponent implements OnInit {
         this.addError = `Invalid hex code format: "${this.customHexInput}". Please use #RRGGBB or #RGB.`;
         return;
       }
-      // 2. HEX TO NAME CONVERSION
+
       const nameFromHex = this.hexToNameMap[enteredHex]; // Use the reverse map
       if (nameFromHex) {
         colorNameToAdd = nameFromHex;
@@ -94,9 +94,9 @@ export class ColorSelectionComponent implements OnInit {
       }
     }
 
-    // 3. add to allColors arry (if valid and not duplicate)
+    // add to allColors arry (if valid and not duplicate)
     if (colorNameToAdd) {
-      // 4. no duplicates check (against the determined color name)
+      // no duplicates check (against the determined color name)
       if (this.allColors.includes(colorNameToAdd)) {
         this.addError = `The color "${colorNameToAdd}" already exists in the list.`;
       } else {
@@ -112,7 +112,6 @@ export class ColorSelectionComponent implements OnInit {
     }
   }
 
-  // --- INPUT INTERACTION HANDLERS ---
   onNameDropdownChange(): void {
     // If a name is selected from the dropdown, clear the hex input and any errors
     if (this.newColorName) {
@@ -129,22 +128,21 @@ export class ColorSelectionComponent implements OnInit {
     }
   }
 
-  // --- COLOR PREVIEW LOGIC ---
+  // getPreviewHex(customHexInput)
   // Gets the hex value for the current valid input (either name or hex) for preview
   getPreviewHex(): string {
-    const hexPattern = /^#([0-9A-F]{6}|[0-9A-Fa-f]{3})$/i;
-    const lowerCaseName = this.newColorName?.toLowerCase(); // Use optional chaining for safety
+    const hexPattern = /^#([0-9A-F]{6}|[0-9A-Fa-f]{3})$/i; // Case-insensitive for preview
+    const lowerCaseName = this.newColorName?.toLowerCase();
 
-    // Check if the lowerCaseName is a valid key from our dictionary
+    // If a name is selected and valid
     if (lowerCaseName && this.availableColors.includes(lowerCaseName)) {
-      // If it's a valid key, we can safely access the dictionary.
-      // The 'as keyof typeof wordToHexDictionary' cast tells TypeScript
-      // that we've confirmed 'lowerCaseName' is a valid key.
       return wordToHexDictionary[lowerCaseName as keyof typeof wordToHexDictionary];
-    } else if (this.customHexInput && hexPattern.test(this.customHexInput)) {
-      return this.customHexInput;
     }
-    return ''; // Return empty string if no valid color for preview
+    // Else if a hex is entered and valid (this is the key part for hex preview)
+    else if (this.customHexInput && hexPattern.test(this.customHexInput)) {
+      return this.customHexInput; // Directly return the valid hex string for styling
+    }
+    return ''; // No valid input for preview
   }
 
 
@@ -153,19 +151,102 @@ export class ColorSelectionComponent implements OnInit {
     return name;
   }
 
+  onEditNameSelected(): void {
+    // If a new name is selected for editing, clear the new hex input and any edit errors
+    if (this.editColorNewName) {
+      this.editColorNewHex = '';
+      this.editError = '';
+    }
+  }
+
+  onEditHexInput(): void {
+    // If user types in the new hex input for editing, clear the new name selection and any edit errors
+    if (this.editColorNewHex) {
+      this.editColorNewName = '';
+      this.editError = '';
+    }
+  }
+
+  getEditPreviewHex(): string {
+    const hexPattern = /^#([0-9A-F]{6}|[0-9A-Fa-f]{3})$/i;
+    const lowerCaseNewName = this.editColorNewName?.toLowerCase();
+
+    // If a new name is selected for editing and it's valid
+    if (lowerCaseNewName && this.availableColors.includes(lowerCaseNewName)) {
+      return wordToHexDictionary[lowerCaseNewName as keyof typeof wordToHexDictionary];
+    }
+    // Else if a new hex is entered for editing and it's valid
+    else if (this.editColorNewHex && hexPattern.test(this.editColorNewHex)) {
+      return this.editColorNewHex; // Directly return the valid hex string
+    }
+    return ''; // No valid input for edit preview
+  }
 
   editColor(): void {
-    if (
-      this.selectedEditColor &&
-      this.editColorValue &&
-      this.allColors.includes(this.selectedEditColor)
-    ) {
-      const index = this.allColors.indexOf(this.selectedEditColor);
-      this.allColors[index] = this.editColorValue;
-      this.updateStorage();
-      // Reset form
-      this.selectedEditColor = '';
-      this.editColorValue = '';
+    this.editError = ''; // Reset edit error
+
+    if (!this.selectedEditColor) {
+      this.editError = "Please select a color to edit first.";
+      return;
+    }
+
+    const originalName = this.selectedEditColor;
+    const newNameFromDropdown = this.editColorNewName?.trim();
+    const newHexFromInput = this.editColorNewHex?.trim().toUpperCase();
+    const hexPattern = /^#([0-9A-F]{6}|[0-9A-F]{3})$/;
+
+    let determinedNewName: string | null = null;
+
+    if (newNameFromDropdown && newHexFromInput) {
+      this.editError = "Please provide the new color by selecting a name OR entering a hex code, not both.";
+      return;
+    }
+    if (!newNameFromDropdown && !newHexFromInput) {
+      this.editError = "Please provide a new name or a new hex code for the color.";
+      return;
+    }
+
+    if (newNameFromDropdown) {
+      determinedNewName = newNameFromDropdown;
+    } else if (newHexFromInput) {
+      if (!hexPattern.test(newHexFromInput)) {
+        this.editError = `Invalid new hex code format: "${this.editColorNewHex}". Please use #RRGGBB or #RGB.`;
+        return;
+      }
+      // Convert hex to name using the dictionary
+      const nameFromHex = this.hexToNameMap[newHexFromInput];
+      if (nameFromHex) {
+        determinedNewName = nameFromHex;
+      } else {
+        this.editError = `The new hex code "${this.editColorNewHex}" does not have a corresponding name in our dictionary.`;
+        return;
+      }
+    }
+
+    if (determinedNewName) {
+      // Check if the determined new name already exists in allColors,
+      // unless it's the same as the original color name (meaning no effective change of name, or changing to self)
+      // or if the determinedNewName is the same as the name it would resolve to if the originalName was a hex.
+      if (this.allColors.includes(determinedNewName) && determinedNewName !== originalName) {
+        // Further check: if originalName was a hex in allColors (which it shouldn't be, but as a safeguard)
+        // and determinedNewName is its actual name, that's fine.
+        // However, allColors should only contain names. So, this mainly checks if determinedNewName is another *different* existing color.
+        this.editError = `The color name "${determinedNewName}" (derived from your input) already exists in the list.`;
+        return;
+      }
+
+      const index = this.allColors.indexOf(originalName);
+      if (index > -1) {
+        this.allColors[index] = determinedNewName;
+        this.updateStorage(); // This also sorts
+        // Reset form
+        this.selectedEditColor = '';
+        this.editColorNewName = '';
+        this.editColorNewHex = '';
+        this.editError = '';
+      } else {
+        this.editError = `Error: The original color "${originalName}" was not found in the list.`; // Should not happen
+      }
     }
   }
 

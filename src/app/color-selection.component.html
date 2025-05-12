@@ -1,38 +1,30 @@
 <h2>Add, Edit, or Delete colors for the Color Coordinate Page</h2>
 <form (ngSubmit)="addColor()" #addForm="ngForm">
-    <h3>Add Color</h3>
-    <div>
+  <h3>Add Color</h3>
+  <div>
     <label for="colorSelectAdd">Choose a color name:</label>
-    <select id="colorSelectAdd" name="newColorName"
-            [(ngModel)]="newColorName"
-            (change)="onNameDropdownChange()"
-            [disabled]="customHexInput ? true : false">
-      <option value="">Select a color to add...</option> <option *ngFor="let color of availableColors" [value]="color"
-              [disabled]="allColors.includes(color)"> {{ color | titlecase }}
+    <select id="colorSelectAdd" name="newColorName" [(ngModel)]="newColorName" (change)="onNameDropdownChange()"
+      [disabled]="customHexInput ? true : false">
+      <option value="">Select a color to add...</option>
+      <option *ngFor="let color of availableColors" [value]="color" [disabled]="allColors.includes(color)"> {{ color |
+        titlecase }}
       </option>
     </select>
   </div>
+
+  <!-- Preview swatch for add color by name-->
+  <div class="color-preview" *ngIf="newColorName" [style.backgroundColor]="getColorHex(newColorName)"></div>
 
   <p style="text-align: center; margin: 5px 0;">OR</p>
 
   <div>
     <label for="hexInput">Enter a hex color (#RRGGBB):</label>
-    <input
-      type="text"
-      id="hexInput"
-      name="customHexInput"
-      [(ngModel)]="customHexInput"
-      (input)="onHexInputChange()"
-      placeholder="#ff9900"
-      pattern="^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$"
-      [disabled]="newColorName ? true : false"
-    />
+    <input type="text" id="hexInput" name="customHexInput" [(ngModel)]="customHexInput" (input)="onHexInputChange()"
+      placeholder="#ff9900" pattern="^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$" [disabled]="newColorName ? true : false" />
   </div>
 
-  <div *ngIf="getPreviewHex()" class="color-preview-container">
-    <label>Preview:</label>
-    <div class="color-box" [style.backgroundColor]="getPreviewHex()"></div>
-  </div>
+  <!-- Preview swatch for add color by hex: getPreviewHex(customHexInput)-->
+  <div *ngIf="customHexInput" class="color-preview" [style.backgroundColor]="getPreviewHex()"></div>
 
   <button type="submit" [disabled]="(!newColorName && !customHexInput) || addForm.invalid">Add</button>
   <p *ngIf="addError" class="error-message">{{ addError }}</p>
@@ -40,45 +32,79 @@
 
 
 <form (ngSubmit)="editColor()" #editForm="ngForm">
-    <h3>Edit Color</h3>
-    <label for="colorSelectEdit">
-        Select:
-        <select name="colorSelectEdit" [(ngModel)]="selectedEditColor" name="editColor" required>
-            <option value="" disabled selected>Select a color to edit...</option>
-            <option *ngFor="let color of allColors" [value]="color">{{ color }}</option>
-        </select>
-    </label>
-    <label for="newColorValue">
-        New Name:
-        <select id="newColorValue" name="editName" [(ngModel)]="editColorValue" required>
-            <option value="" disabled selected>Select a new name...</option>
-            <option *ngFor="let color of availableColors" [value]="color"
-                [disabled]="allColors.includes(color) && color !== selectedEditColor">
-                {{ color | titlecase }}
-            </option>
-        </select>
-    </label>
-    <button type="submit">Update</button>
+  <h3>Edit Color</h3>
+
+  <div>
+    <label for="colorSelectEdit">Select color to edit:</label>
+    <select id="colorSelectEdit" name="selectedEditColor" [(ngModel)]="selectedEditColor" required>
+      <option value="" disabled selected>Select a color...</option>
+      <option *ngFor="let color of allColors" [value]="color">{{ color | titlecase }}</option>
+    </select>
+  </div>
+
+  <!-- Preview swatch for edit: choose current color -->
+  <div class="color-preview" *ngIf="selectedEditColor" [style.backgroundColor]="getColorHex(selectedEditColor)"></div>
+
+  <p style="margin-left: 20px;">Set new value by Name OR Hex:</p>
+
+  <div>
+    <label for="newColorNameForEdit">New Name (from list):</label>
+    <select id="newColorNameForEdit" name="editColorNewName" [(ngModel)]="editColorNewName"
+      (change)="onEditNameSelected()" [disabled]="!!editColorNewHex || !selectedEditColor">
+      <option value="">Select new name...</option>
+      <option *ngFor="let nameOpt of availableColors" [value]="nameOpt"
+        [disabled]="allColors.includes(nameOpt) && nameOpt !== selectedEditColor">
+        {{ nameOpt | titlecase }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Preview swatch for edit: choose new color -->
+  <div class="color-preview" *ngIf="editColorNewName" [style.backgroundColor]="getColorHex(editColorNewName)"></div>
+
+  <p style="text-align: center; margin: 5px 0;">OR</p>
+
+  <div>
+    <label for="editColorNewHex">New Hex Value (#RRGGBB):</label>
+    <input type="text" id="editColorNewHex" name="editColorNewHex" [(ngModel)]="editColorNewHex"
+      (input)="onEditHexInput()" placeholder="#RRGGBB" pattern="^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$"
+      [disabled]="!!editColorNewName || !selectedEditColor" />
+  </div>
+
+  <!-- Preview swatch for edit: choose new hex value - getPreviewHex(editColorNewHex)-->
+  <div class="color-preview" *ngIf="editColorNewHex" [style.backgroundColor]="getPreviewHex()"></div>
+
+  <div *ngIf=" !getEditPreviewHex() && (editForm.controls['editColorNewName']?.touched ||
+    editForm.controls['editColorNewHex']?.touched) && (editColorNewName || editColorNewHex)"
+    class="color-preview-placeholder">
+    Enter a valid new name or hex for preview
+  </div>
+
+
+  <button type="submit" [disabled]="!selectedEditColor || (!editColorNewName && !editColorNewHex) || editForm.invalid">
+    Update Color
+  </button>
+  <p *ngIf="editError" class="error-message">{{ editError }}</p>
 </form>
 
 
 <h3>Delete Color</h3>
 
 <label>
-    <select [(ngModel)]="selectedDeleteColor" name="deleteColor" required>
-        <option value="" disabled selected>Select a color to delete...</option>
-        <option *ngFor="let color of allColors" [value]="color">
-            {{ color }}
-        </option>
-    </select>
+  <select [(ngModel)]="selectedDeleteColor" name="deleteColor" required>
+    <option value="" disabled selected>Select a color to delete...</option>
+    <option *ngFor="let color of allColors" [value]="color">
+      {{ color }}
+    </option>
+  </select>
 </label>
 
 <!-- error handling: delete button disabled below 2 colors -->
 <button (click)="deleteColor()" [disabled]="allColors.length <= 2 || !selectedDeleteColor">
-    Delete
+  Delete
 </button>
 
 <!-- error message if less than 2 colors -->
 <p *ngIf="allColors.length <= 2" class="error-message">
-    You must keep at least 2 colors in the color table.
+  You must keep at least 2 colors in the color table.
 </p>
