@@ -1,4 +1,7 @@
 <h2 *ngIf="selectedCell">Selected Cell: {{ selectedCell }}</h2>
+
+<div class="page-break"></div>
+
 <table class="excel-table">
     <tr *ngFor="let rowIndex of rows; let r = index">
         <td *ngFor="let colName of cols; let c = index"

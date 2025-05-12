@@ -16,3 +16,15 @@
     background-color: #f0f0f0;
     font-weight: bold;
 }
+
+@media print {
+    .excel-table {
+        clear: both;
+        page-break-before: always;
+    }
+    .page-break {
+        page-break-before: always;
+        break-before: page;
+    }
+  }
+  
